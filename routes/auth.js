@@ -49,6 +49,37 @@ router.post("/signup", async (req, res) => {
     }
 });
 
+router.post("/loginWithUsername", async (req,res) => {
+    const { username, password } = req.body;
+
+    try {
+        const user = await User.findOne({username});
+        if (!user) {
+            return res.status(400).json({
+                message: "invalid credentials"
+            });
+        }
+
+        const passMatch = await bcrypt.compare(password, user.password);
+        if (!passMatch) {
+            return res.status(400).json({
+                message: "invalid credentials"
+            });
+        }
+
+        const token = genToken(user);
+        return res.status(200).json({
+            message: "Logged in",
+            token
+        })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+});
+
 async function validateSignupInput(username, email, password, confirmPassword) {
     let valid;
     let errors = [];
