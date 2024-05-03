@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 import User from "../models/User.js";
 import validateSignupInput from "../util/validateSignUpInput.js";
-import { genToken } from "../util/token.js";
+import { genToken, verifyToken } from "../util/token.js";
 
 const router = express.Router();
 
@@ -102,6 +102,33 @@ router.post("/loginWithEmail", async (req,res) => {
             message: "Logged in",
             token
         })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+});
+
+router.post("/getuser", async (req,res) => {
+    const { token } = req.body;
+
+    try {
+        const user = await verifyToken(token);
+        if (user === null) {
+            return res.status(400).json({
+                message: "Bad token",
+            })
+        }
+
+        const data = {
+            username: user.username,
+            email: user.email,
+            createdAt: user.createdAt
+        };
+        return res.status(200).json({
+            data
+        });
     } catch (err) {
         console.log(err);
         return res.status(500).json({
