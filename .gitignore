@@ -2,3 +2,5 @@ backend/node_modules
 backend/.env
 sdk/test
 sdk/node_modules
+dashboard/node_modules
+dashboard/.env
