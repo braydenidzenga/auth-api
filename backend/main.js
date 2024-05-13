@@ -5,6 +5,7 @@ import cors from "cors";
 import { PORT, DB, } from "./config.js";
 import authRoute from "./routes/auth.js";
 import settingsRoute from "./routes/settings.js";
+import dashboardRoute from "./routes/dashboard.js";
 import App from "./models/App.js";
 import { makeSecret } from "./util/appSecret.js";
 
@@ -16,7 +17,9 @@ app.use(cors());
 // routes
 app.use("/api/auth", authRoute);
 app.use("/api/settings", settingsRoute);
+app.use("/api/dashboard", dashboardRoute);
 
+// database connection and server listening
 mongoose.connect(DB)
     .then(async () => {
         console.log("connected to database");
@@ -26,6 +29,7 @@ mongoose.connect(DB)
         await checkForDefaultApp();
     });
 
+// Checks if there is a default app registered, if not, creates one
 async function checkForDefaultApp() {
     const defaultApp = await App.findOne({name: "default"});
     if (!defaultApp) {

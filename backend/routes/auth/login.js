@@ -27,6 +27,15 @@ export async function loginWithUsername(req) {
                 resMessage
             }
         }
+        
+        if (user.banned) {
+            statusCode = 400;
+            resMessage = {"message": "User banned"};
+            return {
+                statusCode,
+                resMessage
+            }
+        }
 
         const token = genToken(user);
         statusCode = 200;
@@ -70,6 +79,15 @@ export async function loginWithEmail(req) {
         if (!passMatch) {
             statusCode = 400;
             resMessage = {"message": "Invalid credentials"};
+            return {
+                statusCode,
+                resMessage
+            }
+        }
+
+        if (user.banned) {
+            statusCode = 400;
+            resMessage = {"message": "User banned"};
             return {
                 statusCode,
                 resMessage

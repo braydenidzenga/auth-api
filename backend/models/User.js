@@ -15,6 +15,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    banned: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+    banReason: {
+        type: String,
+        required: true,
+        default: ""
+    },
     createdAt: {
         type: Date,
         required: true,
