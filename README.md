@@ -1,8 +1,8 @@
 # Open source authentication API
 
 ## Important
-This project is still under development. There is no offical sdk available yet. \n
-This is ment to be integrated into the backend of your project. Do not expose the app secret in client code.
+This project is still under development. There is no offical sdk available yet. \
+This is meant to be integrated into the backend of your project. Do not expose the app secret in client code.
 
 
 ## backend setup
