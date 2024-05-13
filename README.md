@@ -1,5 +1,8 @@
 # Open source authentication API
 
+## Important
+This project is still under development. There is no offical sdk available yet.
+
 ## setup
 create a file called .env
 contents must contain

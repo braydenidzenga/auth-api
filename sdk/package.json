@@ -1,0 +1,12 @@
+{
+  "name": "auth-api-sdk",
+  "version": "1.0.0",
+  "description": "A SDK for a open source authentication api",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
