@@ -23,7 +23,8 @@ async function signUp(req) {
         const newUser = new User({
            username,
            email,
-           password: hashPass
+           password: hashPass,
+           banReason: " "
         });
 
         await newUser.save();
