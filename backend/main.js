@@ -1,13 +1,15 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import bcyrpt from "bcryptjs";
 
-import { PORT, DB, } from "./config.js";
+import { PORT, DB, JWT } from "./config.js";
 import authRoute from "./routes/auth.js";
 import settingsRoute from "./routes/settings.js";
 import dashboardRoute from "./routes/dashboard.js";
 import App from "./models/App.js";
 import { makeSecret } from "./util/appSecret.js";
+import DashboardUser from "./models/DashboardUser.js";
 
 const app = express();
 // middleware
@@ -27,6 +29,7 @@ mongoose.connect(DB)
             console.log(`listening on port ${PORT}`);
         });
         await checkForDefaultApp();
+        await checkForAdminUser();
     });
 
 // Checks if there is a default app registered, if not, creates one
@@ -39,5 +42,22 @@ async function checkForDefaultApp() {
         });
         await newApp.save();
         console.log("default app secret: " + newApp.appSecret);
+    }
+}
+
+// Checks if there is a admin user, if not creates one
+async function checkForAdminUser() {
+    const adminUser = await DashboardUser.findOne({username: "admin"});
+    if (!adminUser) {
+        const hashPass = await bcyrpt.hash("admin", 12);
+
+        const newAdminUser = new DashboardUser({
+            username: "admin",
+            password: hashPass,
+        });
+        await newAdminUser.save();
+
+        console.log("dashboard username: admin");
+        console.log("dashboard password: admin");
     }
 }

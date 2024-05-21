@@ -1,8 +1,9 @@
 import { verifySecret } from "../../util/appSecret.js";
+import { verifyAdminToken } from "../../util/adminToken.js";
 import User from "../../models/User.js";
 
 export async function banUser(req) {
-    const { appSecret, email, reason } = req.body;
+    const { token, appSecret, email, reason } = req.body;
     let statusCode = 200;
     let resMessage = {};
 
@@ -11,6 +12,16 @@ export async function banUser(req) {
         if (!valid) {
             statusCode = 400;
             resMessage = {"message": "Not authorized"};
+            return {
+                statusCode,
+                resMessage
+            }
+        }
+
+        const admin = await verifyAdminToken(token);
+        if (admin === null) {
+            statusCode = 400;
+            resMessage = {"message": "Bad token"};
             return {
                 statusCode,
                 resMessage
